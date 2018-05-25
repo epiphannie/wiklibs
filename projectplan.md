@@ -9,11 +9,14 @@
 8) Insert user_words back into the array, replacing the wiki_words
 9) Make it all look like an article again
 10) Button to start and for new articles
+11) Add instructions to README for how to sign up for one's own API key.
 
 
 Stuff to solve:
 - avoiding parts of speech that no one knows...articles...
   Solution? longer word length. 4 characters +
+
+- figuring out which definition's part of speech I should use...
 
 - somehow avoid words at the start of end of a sentence (punctuation, capitalization)
 
