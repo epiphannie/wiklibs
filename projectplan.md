@@ -1,4 +1,5 @@
 1) Fetch random article ID from Wikipedia
+  Find some way to strip out content that is not an article (user talk, images) #done
 2) Fetch summary of that random article
 3) Parse article content into an array of words
 4) Select up to 10 words from the summary to be replaced
