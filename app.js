@@ -43,7 +43,8 @@ function onRandomSuccess(array) {
     getWikiRandom()
   }
   console.log(randTitlesFiltered);
-} //end onRandomSuccess
+  getWikiRandom(randTitlesFiltered[0];)
+} //end onRandomSuccess, returns array of viable tiles to be sent to getWikiSummary
 
 
 function getWikiSummary (wikiTitle) {
@@ -57,10 +58,37 @@ function getWikiSummary (wikiTitle) {
     },
     success: function(data) {
       console.log(data);
+      //some sort of filtering so only the summary is kept in a variable
+      parseSummary(name of variable);
     }
   }); //end ajax
 } //end getWikiSummary, returns the summary of the random wiki article
 
+function parseSummary(originalSummary) {
+  var $noTagSummary = $(originalSummary).text();
+  var summaryArray = $noTagSummary.split(" ");
+  if (summaryArray.length < 20) {
+    getWikiRandom()
+  }
+  console.log(summaryArray);
+  chooseWords(summaryArray);
+} // end parseSummary, strips HTML from summary and moves the summary into an summaryArray
+
+function chooseWords(summaryArray) {
+  var count = 0;
+  for (i = 0; i <summaryArray.length; i ++) {
+    if (summaryArray[i].length > 3){
+      count +=1;
+    }
+  if (math.round(summaryArray.length/10) > math.round(summaryArray.length/count)) {
+    //if there are more than enough 4-letter words to remove 1 in 10
+    for (i = 0; )
+  } else //if there are less than enough 4-letter words to remove 1 in 10
+
+  }//end for loop
+} //end chooseWords, selects words to be sent to wordsAPI for part of speech retrieval
+
+function
 function getWordData (wikiWord) {
   var requestURL = urlWordsStart + wikiWord + urlWordsEnd;
   $.ajax({
@@ -73,7 +101,6 @@ function getWordData (wikiWord) {
 } //end getWordData, sends API request to wordsAPI
 
 //
-// var summaryArray = originalSummary.split(" ");
-// console.log(summaryArray);
+
 // var finalSummary = summaryArray.join(" ");
 // console.log(finalSummary);
