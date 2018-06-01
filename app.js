@@ -8,7 +8,7 @@ var randomResults; // I don't think I need this?
 ///--------------Utility functions-------------///
 function allLetters(word) {
   var letters = /^[A-Za-z]+$/;
-  if (word.value.match(letters)) {
+  if (word.match(letters)) {
     return true;
   } else {
     return false;
@@ -57,10 +57,9 @@ function onRandomSuccess(array) {
   } //end for loop
   //if there are no viable titles returned, try try again
   if (randTitlesFiltered.length == 0) {
-    getWikiRandom()
+    setTimeout(getWikiRandom(), 60000);
   }
-  console.log(randTitlesFiltered);
-  getWikiRandom(randTitlesFiltered[0]);
+  setTimeout(getWikiSummary(randTitlesFiltered[0]), 60000);
 } //end onRandomSuccess, returns array of viable tiles to be sent to getWikiSummary
 
 
@@ -75,8 +74,7 @@ function getWikiSummary (wikiTitle) {
     },
     success: function(data) {
       console.log(data);
-      //some sort of filtering so only the summary is kept in a variable
-      parseSummary(originalSummary);
+      parseSummary(data.query.pages[Object.keys(data.query.pages)[0]]['extract']); //totally hacky, consider an update
     }
   }); //end ajax
 } //end getWikiSummary, returns the summary of the random wiki article
@@ -85,7 +83,7 @@ function parseSummary(originalSummary) {
   var $noTagSummary = $(originalSummary).text();
   var summaryArray = $noTagSummary.split(" ");
   if (summaryArray.length < 20) {
-    getWikiRandom()
+    setTimeout(getWikiRandom(), 60000)
   }
   console.log(summaryArray);
   countWords(summaryArray);
@@ -102,7 +100,7 @@ function countWords(summaryArray) {
 
   console.log(validWords);
   if (validWords.length < 3) {
-    getWikiRandom()
+    setTimeout(getWikiRandom(), 60000)
   }
   chooseWords(summaryArray, validWords)
 } //end countWords, creates array of words at least 4 letters in length with no special characters
