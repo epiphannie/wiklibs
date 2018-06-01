@@ -3,7 +3,24 @@ var urlWordsEnd = '/definitions';
 var urlWikiSummaryStart = 'https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&titles='
 var urlWikiSummaryEnd = '&exintro=1'
 var urlWikiRandom = 'https://en.wikipedia.org/w/api.php?action=query&format=json&list=random&rnlimit=10'
-var randomResults;
+var randomResults; // I don't think I need this?
+
+///--------------Utility functions-------------///
+function allLetters(word) {
+  var letters = /^[A-Za-z]+$/;
+  if (word.value.match(letters)) {
+    return true;
+  } else {
+    return false;
+  }
+}//end allLeters
+
+function getRandomNumber(max) {
+  return Math.floor(Math.random() * (max-0 +1) + 0);
+}
+
+
+///----------------Wiklibs functions------------///
 
 function getWikiRandom () {
   $.ajax({
@@ -71,24 +88,46 @@ function parseSummary(originalSummary) {
     getWikiRandom()
   }
   console.log(summaryArray);
-  chooseWords(summaryArray);
+  countWords(summaryArray);
 } // end parseSummary, strips HTML from summary and moves the summary into an summaryArray
 
-function chooseWords(summaryArray) {
+function countWords(summaryArray) {
   var count = 0;
+  var validWords = [];
   for (i = 0; i <summaryArray.length; i ++) {
-    if (summaryArray[i].length > 3){
-      count +=1;
+    if (summaryArray[i].length > 3  && allLetters(summaryArray[i])) {
+      validWords.push(i);
     }
-  if (math.round(summaryArray.length/10) > math.round(summaryArray.length/count)) {
-    //if there are more than enough 4-letter words to remove 1 in 10
-    for (i = 0; )
-  } else //if there are less than enough 4-letter words to remove 1 in 10
-
   }//end for loop
-} //end chooseWords, selects words to be sent to wordsAPI for part of speech retrieval
 
-function
+  console.log(validWords);
+  if (validWords.length < 3) {
+    getWikiRandom()
+  }
+  chooseWords(summaryArray, validWords)
+} //end countWords, creates array of words at least 4 letters in length with no special characters
+
+function chooseWords(summaryArray, validWords) {
+  var wordsToUse = Math.min(Math.round(summaryArray.length)/10, validWords.length)
+  console.log(wordsToUse)
+
+  var indexOfAPIWords = [];
+  for (i = 0; i < wordsToUse; i++) {
+    indexOfAPIWords.push(getRandomNumber(validWords.length))
+  } //this doesn't save the original index of the word. Need to fix.
+  console.log(indexOfAPIWords);
+  getWords(summaryArray, indexOfAPIWords)
+} //end chooseWords, selects the words in the article to send to wordsAPI
+
+function getWords(summaryArray,indexOfAPIWords, validWords) {
+  var wordsToLookup = [];
+  for (i = 0 ; i < indexOfAPIWords.length; i++ ) {
+    wordsToLookup.push(validWords[indexOfAPIWords[i]]);
+  }
+  console.log(wordsToLookup)
+  console.log(summaryArray)
+}//end getWords, selects the words from the summary array based on the random list of valid words
+
 function getWordData (wikiWord) {
   var requestURL = urlWordsStart + wikiWord + urlWordsEnd;
   $.ajax({

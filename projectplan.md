@@ -1,8 +1,8 @@
 1) Fetch random article ID from Wikipedia
   Find some way to strip out content that is not an article (user talk, images) #done
-2) Fetch summary of that random article
-3) Parse article content into an array of words
-4) Select up to 10 words from the summary to be replaced
+2) Fetch summary of that random article #done
+3) Parse article content into an array of words #done
+4) Select up to 10 words from the summary to be replaced #done
 5) Place words in an object, keys -> place in master array, wiki_word, part of speech, user_word
 5) Run  WordsAPI calls on each to find out the part of speech
 6) Pull example parts of speech from example-part-of-speech object..that I have created at some point
