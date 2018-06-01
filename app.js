@@ -43,7 +43,7 @@ function onRandomSuccess(array) {
     getWikiRandom()
   }
   console.log(randTitlesFiltered);
-  getWikiRandom(randTitlesFiltered[0];)
+  getWikiRandom(randTitlesFiltered[0]);
 } //end onRandomSuccess, returns array of viable tiles to be sent to getWikiSummary
 
 
@@ -59,7 +59,7 @@ function getWikiSummary (wikiTitle) {
     success: function(data) {
       console.log(data);
       //some sort of filtering so only the summary is kept in a variable
-      parseSummary(name of variable);
+      parseSummary(originalSummary);
     }
   }); //end ajax
 } //end getWikiSummary, returns the summary of the random wiki article
