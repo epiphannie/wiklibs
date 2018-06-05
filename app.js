@@ -6,14 +6,14 @@ var urlWikiRandom = 'https://en.wikipedia.org/w/api.php?action=query&format=json
 var randomResults; // I don't think I need this?
 
 ///--------------Utility functions-------------///
-function allLetters(word) {
-  var letters = /^[A-Za-z]+$/;
+function allLCletters(word) {
+  var letters = /^[a-z]+$/;
   if (word.match(letters)) {
     return true;
   } else {
     return false;
   }
-}//end allLeters
+}//end allLCletters
 
 function getRandomNumber(max) {
   return Math.floor(Math.random() * (max-0 +1) + 0);
@@ -35,12 +35,12 @@ function getWikiRandom () {
       for (i = 0; i < data.query.random.length; i++) {
         randomTitles.push(data.query.random[i]['title'])
       }
-      onRandomSuccess(randomTitles)
+      onWikiSuccess(randomTitles)
     } //end success
   }); //end ajax
 } //end getWikiRandom, returns the name of five random wiki articles for filtering
 
-function onRandomSuccess(array) {
+function onWikiSuccess(array) {
   // fed into getWikiRandom
   var randTitlesFiltered = [];
   for (i = 0; i < array.length; i++) {
@@ -51,7 +51,9 @@ function onRandomSuccess(array) {
         array[i].startsWith("Category") ||
         array[i].startsWith("Wikipedia") ||
         array[i].startsWith("Portal") ||
-        array[i].startsWith("File"))) {
+        array[i].startsWith("File") ||
+        array[i].startsWith("File:") ||
+        array[i].startsWith("Talk:"))) {
           randTitlesFiltered.push(array[i]);
         } //end if
   } //end for loop
@@ -60,7 +62,7 @@ function onRandomSuccess(array) {
     setTimeout(getWikiRandom(), 60000);
   }
   setTimeout(getWikiSummary(randTitlesFiltered[0]), 60000);
-} //end onRandomSuccess, returns array of viable tiles to be sent to getWikiSummary
+} //end onWikiSuccess, returns array of viable tiles to be sent to getWikiSummary
 
 
 function getWikiSummary (wikiTitle) {
@@ -93,12 +95,15 @@ function countWords(summaryArray) {
   var count = 0;
   var validWords = [];
   for (i = 0; i <summaryArray.length; i ++) {
-    if (summaryArray[i].length > 3  && allLetters(summaryArray[i])) {
-      validWords.push(i);
+    if (summaryArray[i].length > 3  && allLCletters(summaryArray[i])) {
+      validWordsEntry={};
+      validWordsEntry['origLoc']= i;
+      validWordsEntry['origWord']= summaryArray[i];
+      validWords.push(validWordsEntry);
     }
   }//end for loop
-
   console.log(validWords);
+  console.log('The length of valid words is ' + validWords.length)
   if (validWords.length < 3) {
     setTimeout(getWikiRandom(), 60000)
   }
@@ -107,37 +112,55 @@ function countWords(summaryArray) {
 
 function chooseWords(summaryArray, validWords) {
   var wordsToUse = Math.min(Math.round(summaryArray.length)/10, validWords.length)
-  console.log(wordsToUse)
-
-  var indexOfAPIWords = [];
+  var validWordstoAPI = [];
   for (i = 0; i < wordsToUse; i++) {
-    indexOfAPIWords.push(getRandomNumber(validWords.length))
+    randPosition = getRandomNumber(validWords.length);
+    validWordstoAPI.push(validWords[randPosition]);
   } //this doesn't save the original index of the word. Need to fix.
-  console.log(indexOfAPIWords);
-  getWords(summaryArray, indexOfAPIWords)
-} //end chooseWords, selects the words in the article to send to wordsAPI
-
-function getWords(summaryArray,indexOfAPIWords, validWords) {
-  var wordsToLookup = [];
-  for (i = 0 ; i < indexOfAPIWords.length; i++ ) {
-    wordsToLookup.push(validWords[indexOfAPIWords[i]]);
-  }
-  console.log(wordsToLookup)
-  console.log(summaryArray)
-}//end getWords, selects the words from the summary array based on the random list of valid words
-
-function getWordData (wikiWord) {
-  var requestURL = urlWordsStart + wikiWord + urlWordsEnd;
-  $.ajax({
-    url: requestURL,
-    headers: wordsAPIheader,
-    success: function(data) {
-      console.log(data);
-    }
-  }); //end ajax
-} //end getWordData, sends API request to wordsAPI
-
+  console.log(validWordstoAPI);
+  console.log('The length of words to API is ' + validWordstoAPI.length)
+  appendPartOfSpeech(summaryArray,validWordstoAPI);
+}//end chooseWords, selects the words in the article to send to wordsAPI
 //
+// // function getWords(summaryArray,validWordstoAPI) {
+// //   var wordsToLookup = [];
+// //   for (i = 0 ; i < indexOfAPIWords.length; i++ ) {
+// //     wordsToLookup.push(validWords[indexOfAPIWords[i]]);
+// //   }
+// //  console.log(wordsToLookup)
+// //   console.log(summaryArray)
+// // }//end getWords, selects the words from the summary array based on the random list of valid words
+function appendPartOfSpeech(summaryArray, validWordstoAPI) {
+  for(i = 0 ; i < validWordstoAPI.length ; i++) {
+    var counter = i;
+    iterateGetWord(counter, validWordstoAPI, summaryArray)
+  }
+  console.log(validWordstoAPI);
+} //end appendPartOfSpeech, calls 3 functions, starting with iterateGetWord, in a loop
+
+function iterateGetWord (counter, validWordstoAPI, summaryArray) {
+     var wikiWord = validWordstoAPI[counter]['origWord']
+     getWordData(wikiWord, counter, summaryArray, validWordstoAPI)
+} //end iterateGetWord, iterates through the words to send to the API, also calls getWordData>addToValidWords
+
+function getWordData (wikiWord, counter, summaryArray, validWordstoAPI) {
+   var requestURL = urlWordsStart + wikiWord + urlWordsEnd;
+   $.ajax({
+     url: requestURL,
+     headers: wordsAPIheader,
+     success: function(data) {
+       console.log(data['definitions'][0]['partOfSpeech']);
+       var partOfSpeech = data['definitions'][0]['partOfSpeech'];
+       addToValidWords(partOfSpeech, counter, summaryArray, validWordstoAPI);
+     } //end success function
+   }); //end ajax
+} //end getWordData, sends API request to wordsAPI, calls addToValidWords
+
+function addToValidWords(partOfSpeech, counter, summaryArray, validWordstoAPI) {
+    validWordstoAPI[counter].partOfSpeech = partOfSpeech;
+} //end addToValidWords, adds returned part of speec to valid words array
+
+
 
 // var finalSummary = summaryArray.join(" ");
 // console.log(finalSummary);

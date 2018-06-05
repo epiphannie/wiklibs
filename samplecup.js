@@ -1,4 +1,4 @@
-{word: "cup", definitions: Array(11)}
+var cup = {word: "cup", definitions: Array(11)}
 definitions
 :
 Array(11)
