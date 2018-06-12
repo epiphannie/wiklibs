@@ -1,0 +1,10 @@
+/* ----------- Element Styles ---------- */
+body {
+  font-family: sans-serif;
+}
+/* ----------- Class Styles ---------- */
+
+.jumbotron-fluid {
+  padding: 2em;
+}
+/* ----------- ID Styles ---------- */

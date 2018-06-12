@@ -5,22 +5,8 @@ var urlWikiSummaryEnd = '&exintro=1'
 var urlWikiRandom = 'https://en.wikipedia.org/w/api.php?action=query&format=json&list=random&rnlimit=10'
 var randomResults; // I don't think I need this?
 
-///--------------Utility functions-------------///
-function allLCletters(word) {
-  var letters = /^[a-z]+$/;
-  if (word.match(letters)) {
-    return true;
-  } else {
-    return false;
-  }
-}//end allLCletters
 
-function getRandomNumber(max) {
-  return Math.floor(Math.random() * Math.floor(max));
-}
-
-
-///----------------Wiklibs functions------------///
+///----------------API functions------------///
 
 function getWikiRandom () {
   $.ajax({
@@ -30,7 +16,6 @@ function getWikiRandom () {
       'Api-User-Agent': 'McWikiBot/1.0',
     },
     success: function(data) {
-      console.log(data.query.random);
       var randomTitles = [];
       for (i = 0; i < data.query.random.length; i++) {
         randomTitles.push(data.query.random[i]['title'])
@@ -75,7 +60,6 @@ function getWikiSummary (wikiTitle) {
       'Api-User-Agent': 'McWikiBot/1.0',
     },
     success: function(data) {
-      console.log(data);
       parseSummary(data.query.pages[Object.keys(data.query.pages)[0]]['extract']); //totally hacky, consider an update
     }
   }); //end ajax
@@ -84,10 +68,9 @@ function getWikiSummary (wikiTitle) {
 function parseSummary(originalSummary) {
   var $noTagSummary = $(originalSummary).text();
   var summaryArray = $noTagSummary.split(" ");
-  if (summaryArray.length < 20) {
+  if (summaryArray.length < 20 || summaryArray.length > 250) {
     getWikiRandom();
   }
-  console.log(summaryArray);
   countWords(summaryArray);
 } // end parseSummary, strips HTML from summary and moves the summary into an summaryArray
 
@@ -102,7 +85,6 @@ function countWords(summaryArray) {
       validWords.push(validWordsEntry);
     }
   }//end for loop
-  console.log(validWords);
   if (validWords.length < 3) {
     getWikiRandom();
   }
@@ -126,7 +108,6 @@ function chooseWords(summaryArray, validWords) {
     }
   }//end while loop, converts to a object to prevent duplicates
   var validWordstoAPI = Object.values(validWordstoAPIObject); //converts back to array
-  console.log(validWordstoAPI); // as Array
   appendPartOfSpeech(summaryArray,validWordstoAPI);
 }//end chooseWords, selects the words in the article to send to wordsAPI
 
@@ -135,7 +116,7 @@ function appendPartOfSpeech(summaryArray, validWordstoAPI) {
     var counter = i;
     iterateGetWord(counter, validWordstoAPI, summaryArray)
   }
-  console.log(validWordstoAPI);
+  setTimeout(buildForm(summaryArray, validWordstoAPI, exampleParts), 5000);
 } //end appendPartOfSpeech, calls 3 functions, starting with iterateGetWord, in a loop
 
 function iterateGetWord (counter, validWordstoAPI, summaryArray) {
@@ -149,7 +130,6 @@ function getWordData (wikiWord, counter, summaryArray, validWordstoAPI) {
      url: requestURL,
      headers: wordsAPIheader,
      success: function(data) {
-       console.log(data);
        var partOfSpeech = data['definitions'][0]['partOfSpeech'];
        addToValidWords(partOfSpeech, counter, summaryArray, validWordstoAPI);
      } //end success function
@@ -158,9 +138,4 @@ function getWordData (wikiWord, counter, summaryArray, validWordstoAPI) {
 
 function addToValidWords(partOfSpeech, counter, summaryArray, validWordstoAPI) {
     validWordstoAPI[counter].partOfSpeech = partOfSpeech;
-} //end addToValidWords, adds returned part of speec to valid words array
-
-
-
-// // var finalSummary = summaryArray.join(" ");
-// // console.log(finalSummary);
+} //end addToValidWords, adds returned part of speech to valid words array
