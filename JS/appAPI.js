@@ -92,7 +92,7 @@ function countWords(summaryArray) {
 } //end countWords, creates array of words at least 4 letters in length with no special characters
 
 function chooseWords(summaryArray, validWords) {
-  var wordsToUse = Math.min(Math.round(summaryArray.length/10), validWords.length)
+  var wordsToUse = Math.min(Math.round(summaryArray.length/10), validWords.length, 10)
   var validWordstoAPIObject = {};
 
   while (Object.keys(validWordstoAPIObject).length < wordsToUse) {
@@ -108,6 +108,8 @@ function chooseWords(summaryArray, validWords) {
     }
   }//end while loop, converts to a object to prevent duplicates
   var validWordstoAPI = Object.values(validWordstoAPIObject); //converts back to array
+  console.log(summaryArray);
+  console.log(validWordstoAPI);
   appendPartOfSpeech(summaryArray,validWordstoAPI);
 }//end chooseWords, selects the words in the article to send to wordsAPI
 

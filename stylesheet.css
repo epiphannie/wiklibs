@@ -6,5 +6,11 @@ body {
 
 .jumbotron-fluid {
   padding: 2em;
+  background-color:
 }
 /* ----------- ID Styles ---------- */
+
+#w,
+#pencil {
+  color: #DE6177;
+}

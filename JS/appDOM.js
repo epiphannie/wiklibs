@@ -33,10 +33,11 @@ document.getElementById("start-btn").onclick = function () {
 // ///---------------Manipulate HTML-----------///
 function buildForm(summaryArray, validWordstoAPI, exampleParts) {
   var formHTML = '<form>';
-  console.log(validWordstoAPI[0])
-  console.log(validWordstoAPI[0].partOfSpeech)
-  console.log(validWordstoAPI[0].origWord)
-  
+  console.log("orig word is ", validWordstoAPI[0].origWord)
+  console.log("orig location is ", validWordstoAPI[0].origLoc)
+  console.log("part of speech is ", validWordstoAPI[0].partOfSpeech)
+
+
   for (i = 0; i < validWordstoAPI.length; i++) {
     if (validWordstoAPI[i]['partOfSpeech'] === null) {
       continue;
