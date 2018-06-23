@@ -8,6 +8,11 @@ body {
   padding: 2em;
   background-color:
 }
+
+.apiWord {
+  background-color: #ffc107;;
+  color: #DE6177;
+}
 /* ----------- ID Styles ---------- */
 
 #w,

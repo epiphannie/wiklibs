@@ -4,5 +4,6 @@ var exampleParts = {
   'verb': 'to drive, ambled, baffles',
   'adverb': 'slowly, often, also',
   'pronoun': 'they, that, those',
-  'conjunction': 'and, or, both, neither'
+  'conjunction': 'and, or, both, neither',
+  'preposition': 'beside, underneath, over'
 }

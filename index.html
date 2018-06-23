@@ -20,12 +20,13 @@
         </ul>
       </div>
     </nav> -->
-    <div class='container'>
+    <div class='container' id="jumbotron">
       <div class="jumbotron jumbotron-fluid">
         <h2 class="display-4"><i id="w" class="fab fa-wikipedia-w"></i>iklibs</h2>
         <p class="lead">A tool for creating nonsense.</p>
         <hr class="my-4">
-        <p>Click the button. Fill in the form. Watch the magic happen.</p>
+        <p id="jumbo-header">Click the button. Fill in the form. Watch the magic happen.</p>
+        <p id="results-start"></p>
         <a class="btn btn-warning btn-lg" id="start-btn" data-toggle="modal" data-target="#modalForm" href="#" role="button">Create <i id="pencil" class="fas fa-pencil-alt"></i></a>
       </div>
     </div>
@@ -34,21 +35,24 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title" id="exampleModalLabel">Do your worst!</h4>
+            <h5 class="modal-title">Fill in each blank with a word corresponding to the given part of speech. Examples are provided for your inpsiration.</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
-            <p id="form-header">Fill in each blank with a word corresponding to the given part of speech. Examples are provided for your inpsiration.</p>
+            <span id="start-of-form"></span>
+
 
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-warning" data-dismiss="modal">Get Wiklib'd</button>
+            <button type="button" class="btn btn-warning" id="generator" data-dismiss="modal">Get Wiklib'd</button>
           </div>
         </div>
       </div>
-      <script
+    </div>
+
+    <script
   			  src="https://code.jquery.com/jquery-3.3.1.min.js"
   			  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
   			  crossorigin="anonymous"></script>
