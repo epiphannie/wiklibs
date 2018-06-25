@@ -7,9 +7,9 @@
 5) Run  WordsAPI calls on each to find out the part of speech #done
 6) Pull example parts of speech from example-part-of-speech object..that I have created at some point #done
 7) Generate modal window with input boxes for each part of speech-- placeholder part of speech and example #done
-8) Insert user_words back into the array, replacing the wiki_words. Color the words that were inserted.
-9) Make it all look like an article again
-10) Button to start and for new articles
+8) Insert user_words back into the array, replacing the wiki_words. Color the words that were inserted. #done
+9) Make it all look like an article again #done
+10) Button to start and for new articles #done
 11) Add instructions to README for how to sign up for one's own API key.
 
 

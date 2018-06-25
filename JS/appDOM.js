@@ -33,11 +33,17 @@ document.getElementById("start-btn").onclick = function () {
 // ///---------------Manipulate HTML-----------///
 function buildForm(summaryArray, validWordstoAPI, exampleParts) {
   console.log('build form start')
-  var formHTML = '<form>';
+
+  if (document.getElementById('form-contents')) {
+    document.getElementById('form-contents').remove();
+  } //remove form if present
+
+  var formHTML = '';
+  formHTML += '<form id="form-contents">';
 
   for (i = 0; i < validWordstoAPI.length; i++) {
     var currPartOfSpeech = validWordstoAPI[i]['partOfSpeech'].toUpperCase();
-    console.log(currPartOfSpeech);
+    // console.log(currPartOfSpeech);
     var currID = 'word' + i;
     var currExamples = exampleParts[currPartOfSpeech.toLowerCase()];
 
@@ -55,26 +61,24 @@ function buildForm(summaryArray, validWordstoAPI, exampleParts) {
 
   formHTML += '</form>';
   $("#start-of-form").append(formHTML);
-  console.log(formHTML)
-  console.log(summaryArray);
-  console.log(validWordstoAPI);
 
   document.getElementById("generator").onclick = function () {
     collectInput(summaryArray, validWordstoAPI)
   };
-
 }
 
 function collectInput(summaryArray, validWordstoAPI) {
     var input = document.querySelectorAll("input");
     for(i = 0; i < input.length; i++){ // loop through each input on the page
-        validWordstoAPI[i]['newWord'] = input[i].value; // will alert the value of the input
+        validWordstoAPI[i]['newWord'] = input[i].value.toLowerCase();
     }
     wiklibIsBorn(summaryArray, validWordstoAPI)
 }
 
 function wiklibIsBorn(summaryArray, validWordstoAPI) {
-
+  if (document.getElementById('results')) {
+    document.getElementById('results').remove();
+  }
   var userSummaryArray = Array.from(summaryArray);
   for (i = 0; i < userSummaryArray.length; i++) {
     for (j = 0; j < validWordstoAPI.length; j++) {
@@ -98,9 +102,24 @@ function wiklibIsBorn(summaryArray, validWordstoAPI) {
   origSummaryDiv += '<h4 id="results-header"> Original Wiki Summary </h4>'
   origSummaryDiv += origSummaryContent + '</div>';
 
-  var wiklibResults = userSummaryDiv + "<br>" + origSummaryDiv + "<br>";
+  var resetButton = '<button class="btn btn-warning btn-lg" id="reset-btn">Another?</button>'
+
+  var wiklibResults = '<div id="results">' + userSummaryDiv + "<br>" + origSummaryDiv + "<br>" + resetButton + '</div>';
 
   $("#jumbo-header").hide();
-  document.getElementById("start-btn").innerHTML = "Another?";
+  $("#start-btn").hide();
   $("#results-start").append(wiklibResults);
+  $("#results").show();
+
+  document.getElementById("reset-btn").onclick =  function () {
+    resetWiklib(summaryArray, validWordstoAPI)
+  };
 } //end wiklibIsBorn
+
+function resetWiklib (summaryArray, validWordstoAPI, wiklibResults) {
+  $("#results").hide();
+  $("#jumbo-header").show();
+  summaryArray = [];
+  validWordstoAPI = [];
+  $( "#start-btn" ).trigger( "click" );
+}
