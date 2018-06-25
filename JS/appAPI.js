@@ -166,6 +166,8 @@ function getWordData (wikiWord, counter, summaryArray, validWordstoAPI) {
         }
         if (partOfSpeech === 'verb' && wikiWord.substr(wikiWord.length - 1) === 's') {
           partOfSpeech = 'third-person verb';
+        } else if (partOfSpeech === 'verb' && wikiWord.substr(wikiWord.length - 1) !== 's') {
+          partOfSpeech = 'verb not ending in "s"';
         }
         // console.log('part of speech is defined')
         // console.log('adding part of speech ', partOfSpeech, ' to word ', wikiWord);

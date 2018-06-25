@@ -12,27 +12,14 @@ function getRandomNumber(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
 
-// function countPartsOfSpeech(array, partOfSpeech) {
-//   var counter = 0;
-//   var countPartsEntry = {};
-//   for (i = 0; i < array.length; i++) {
-//     if(array[i]['partOfSpeech'] === partOfSpeech){
-//       counter += 1;
-//     }
-//   }
-//   countPartsEntry['partOfSpeech'] = partOfSpeech;
-//   countPartsEntry['count'] = counter;
-//   return countPartsEntry;
-// }
 ///---------------On Click---------///
 document.getElementById("start-btn").onclick = function () {
   getWikiRandom()
 };
 
 
-// ///---------------Manipulate HTML-----------///
+///---------------Manipulate HTML-----------///
 function buildForm(summaryArray, validWordstoAPI, exampleParts) {
-  console.log('build form start')
 
   if (document.getElementById('form-contents')) {
     document.getElementById('form-contents').remove();
@@ -93,21 +80,20 @@ function wiklibIsBorn(summaryArray, validWordstoAPI) {
 
   var userSummaryContent = userSummaryArray.join(' ');
   var userSummaryDiv = '<div id="user-summary">'
-  userSummaryDiv += '<h4 id="results-header">Your Beautiful Wiklib</h4>'
+  userSummaryDiv += '<h4 id="results-header" class="wiki-header">Your beautiful Wiklib</h4>'
   userSummaryDiv += userSummaryContent + '</div>';
 
 
   var origSummaryContent = summaryArray.join(' ');
   var origSummaryDiv = '<div id="original-summary">'
-  origSummaryDiv += '<h4 id="results-header"> Original Wiki Summary </h4>'
+  origSummaryDiv += '<h4 id="results-header" class="wiki-header"> Original Wiki Summary </h4>'
   origSummaryDiv += origSummaryContent + '</div>';
 
   var resetButton = '<button class="btn btn-warning btn-lg" id="reset-btn">Another?</button>'
 
   var wiklibResults = '<div id="results">' + userSummaryDiv + "<br>" + origSummaryDiv + "<br>" + resetButton + '</div>';
 
-  $("#jumbo-header").hide();
-  $("#start-btn").hide();
+  $("#jumbo-header, #start-btn").hide();
   $("#results-start").append(wiklibResults);
   $("#results").show();
 

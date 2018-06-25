@@ -9,13 +9,17 @@ body {
   background-color:
 }
 
+.wiki-header {
+  font-family: 'Linux Libertine', Georgia, Times, serif; //wikipedia header font stack
+}
+
 .apiWord {
   background-color: #ffc107;;
   color: #DE6177;
 }
-/* ----------- ID Styles ---------- */
 
-#w,
-#pencil {
+.icon {
   color: #DE6177;
 }
+
+/* ----------- ID Styles ---------- */

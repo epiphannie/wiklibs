@@ -11,6 +11,10 @@
 9) Make it all look like an article again #done
 10) Button to start and for new articles #done
 11) Add instructions to README for how to sign up for one's own API key.
+- wiki font stack #done
+- git hub link #done
+- is it responsive? #done
+- loading message
 
 
 Stuff to solve:
