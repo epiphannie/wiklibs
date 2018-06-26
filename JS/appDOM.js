@@ -26,7 +26,6 @@ function buildForm(summaryArray, validWordstoAPI, exampleParts) {
 
   for (i = 0; i < validWordstoAPI.length; i++) {
     var currPartOfSpeech = validWordstoAPI[i]['partOfSpeech'].toUpperCase();
-    // console.log(currPartOfSpeech);
     var currID = 'word' + i;
     var currExamples = exampleParts[currPartOfSpeech.toLowerCase()];
 
