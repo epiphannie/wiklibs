@@ -5,7 +5,6 @@ var urlWikiSummaryEnd = '&exintro=1'
 var urlWikiRandom = 'https://en.wikipedia.org/w/api.php?action=query&format=json&list=random&rnlimit=10'
 var returnedDefs = 0
 
-
 ///----------------API functions------------///
 
 function getWikiRandom () {

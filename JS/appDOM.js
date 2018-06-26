@@ -1,4 +1,3 @@
-
 ///--------------Utility functions-------------///
 function allLCletters(word) {
   var letters = /^[a-z]+$/;
@@ -18,7 +17,6 @@ document.getElementById("start-btn").onclick = function () {
   $(".modal-title").hide();
   getWikiRandom()
 };
-
 
 ///---------------Manipulate HTML-----------///
 function buildForm(summaryArray, validWordstoAPI, exampleParts) {
