@@ -88,7 +88,7 @@ function countWords(summaryArray) {
   var count = 0;
   var validWords = [];
   for (i = 0; i <summaryArray.length; i ++) {
-    if (summaryArray[i].length > 3  && allLCletters(summaryArray[i])) {
+    if (summaryArray[i].length > 4  && allLCletters(summaryArray[i])) {
       validWordsEntry={};
       validWordsEntry['origLoc']= i;
       validWordsEntry['origWord']= summaryArray[i];

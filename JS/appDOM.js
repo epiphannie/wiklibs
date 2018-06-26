@@ -1,3 +1,4 @@
+
 ///--------------Utility functions-------------///
 function allLCletters(word) {
   var letters = /^[a-z]+$/;
@@ -14,16 +15,13 @@ function getRandomNumber(max) {
 
 ///---------------On Click---------///
 document.getElementById("start-btn").onclick = function () {
+  $(".modal-title").hide();
   getWikiRandom()
 };
 
 
 ///---------------Manipulate HTML-----------///
 function buildForm(summaryArray, validWordstoAPI, exampleParts) {
-
-  if (document.getElementById('form-contents')) {
-    document.getElementById('form-contents').remove();
-  } //remove form if present
 
   var formHTML = '';
   formHTML += '<form id="form-contents">';
@@ -47,6 +45,9 @@ function buildForm(summaryArray, validWordstoAPI, exampleParts) {
   }
 
   formHTML += '</form>';
+  $(".modal-title").show();
+  $(".modal-loading").hide();
+
   $("#start-of-form").append(formHTML);
 
   document.getElementById("generator").onclick = function () {
@@ -103,6 +104,11 @@ function wiklibIsBorn(summaryArray, validWordstoAPI) {
 } //end wiklibIsBorn
 
 function resetWiklib (summaryArray, validWordstoAPI, wiklibResults) {
+  if (document.getElementById('form-contents')) {
+      document.getElementById('form-contents').remove();
+  } //remove form if present
+
+  $(".modal-loading").show();
   $("#results").hide();
   $("#jumbo-header").show();
   summaryArray = [];
