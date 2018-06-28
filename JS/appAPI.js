@@ -129,35 +129,35 @@ function iterateGetWord (counter, validWordstoAPI, summaryArray) {
      getWordData(wikiWord, counter, summaryArray, validWordstoAPI)
 } //end iterateGetWord, iterates through the words to send to the API, also calls getWordData>addToValidWords
 
+function enhancedPartOfSpeech (wikiWord, partOfSpeech) {
+  if (wikiWord.substr(wikiWord.length - 3) === 'ing') {
+      partOfSpeech = '-ing word';
+    } else if (wikiWord.substr(wikiWord.length - 2) === 'ed') {
+      partOfSpeech = '-ed word';
+    } else if (partOfSpeech === 'noun' && wikiWord.substr(wikiWord.length - 1) === 's') {
+      partOfSpeech = 'plural noun';
+    } else if (partOfSpeech === 'noun' && wikiWord.substr(wikiWord.length - 1) !== 's') {
+      partOfSpeech = 'singular noun';
+    } else if (partOfSpeech === 'verb' && wikiWord.substr(wikiWord.length - 1) === 's') {
+      partOfSpeech = 'third-person verb';
+    } else if (partOfSpeech === 'verb' && wikiWord.substr(wikiWord.length - 1) !== 's') {
+      partOfSpeech = 'verb not ending in "s"';
+  }
+    return partOfSpeech;
+}//end enhancedPartOfSpeech
+
 function getWordData (wikiWord, counter, summaryArray, validWordstoAPI) {
    var requestURL = urlWordsStart + wikiWord + urlWordsEnd;
    $.ajax({
      url: requestURL,
      headers: wordsAPIheader,
      success: function(data) {
-       // console.log(data);
-
       // initial part of speech check
       if (data && data['definitions'] && data['definitions'].length>0 && data['definitions'][0]['partOfSpeech']) {
         var partOfSpeech = data['definitions'][0]['partOfSpeech'];
-
-        if (wikiWord.substr(wikiWord.length - 3) === 'ing') {
-          partOfSpeech = '-ing word';
-        } else if (wikiWord.substr(wikiWord.length - 2) === 'ed') {
-          partOfSpeech = '-ed word';
-        }
-        if (partOfSpeech === 'noun' && wikiWord.substr(wikiWord.length - 1) === 's') {
-          partOfSpeech = 'plural noun';
-        } else if (partOfSpeech === 'noun' && wikiWord.substr(wikiWord.length - 1) !== 's') {
-          partOfSpeech = 'singular noun';
-        }
-        if (partOfSpeech === 'verb' && wikiWord.substr(wikiWord.length - 1) === 's') {
-          partOfSpeech = 'third-person verb';
-        } else if (partOfSpeech === 'verb' && wikiWord.substr(wikiWord.length - 1) !== 's') {
-          partOfSpeech = 'verb not ending in "s"';
-        }
-         addToValidWords(partOfSpeech, counter, summaryArray, validWordstoAPI);
-       } else {
+        console.log(data)
+           addToValidWords(enhancedPartOfSpeech(wikiWord, partOfSpeech), counter, summaryArray, validWordstoAPI);
+        } else {
          //part of speech is undefined
          addToValidWords('NA', counter, summaryArray, validWordstoAPI);
        } //end if/else
