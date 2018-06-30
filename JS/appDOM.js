@@ -1,6 +1,6 @@
 ///--------------Utility functions-------------///
 function allLCletters(word) {
-  var letters = /^[a-z]+$/;
+  const letters = /^[a-z]+$/;
   if (word.match(letters)) {
     return true;
   } else {
@@ -20,14 +20,13 @@ document.getElementById("start-btn").onclick = function () {
 
 ///---------------Manipulate HTML-----------///
 function buildForm(summaryArray, validWordstoAPI, exampleParts) {
-
-  var formHTML = '';
+  let formHTML = '';
   formHTML += '<form id="form-contents">';
 
-  for (i = 0; i < validWordstoAPI.length; i++) {
-    var currPartOfSpeech = validWordstoAPI[i]['partOfSpeech'].toUpperCase();
-    var currID = 'word' + i;
-    var currExamples = exampleParts[currPartOfSpeech.toLowerCase()];
+  for (let i = 0; i < validWordstoAPI.length; i++) {
+    const currPartOfSpeech = validWordstoAPI[i]['partOfSpeech'].toUpperCase();
+    const currID = 'word' + i;
+    const currExamples = exampleParts[currPartOfSpeech.toLowerCase()];
 
     formHTML += '<div class="form-group"> <label for="';
     formHTML += currID;
@@ -53,8 +52,8 @@ function buildForm(summaryArray, validWordstoAPI, exampleParts) {
 }
 
 function collectInput(summaryArray, validWordstoAPI) {
-    var input = document.querySelectorAll("input");
-    for(i = 0; i < input.length; i++){ // loop through each input on the page
+    const input = document.querySelectorAll("input");
+    for (let i = 0; i < input.length; i++){ // loop through each input on the page
         validWordstoAPI[i]['newWord'] = input[i].value.toLowerCase();
     }
     wiklibIsBorn(summaryArray, validWordstoAPI)
@@ -64,11 +63,11 @@ function wiklibIsBorn(summaryArray, validWordstoAPI) {
   if (document.getElementById('results')) {
     document.getElementById('results').remove();
   }
-  var userSummaryArray = Array.from(summaryArray);
-  for (i = 0; i < userSummaryArray.length; i++) {
-    for (j = 0; j < validWordstoAPI.length; j++) {
+  const userSummaryArray = Array.from(summaryArray);
+  for (let i = 0; i < userSummaryArray.length; i++) {
+    for (let j = 0; j < validWordstoAPI.length; j++) {
       if (i === validWordstoAPI[j]['origLoc']) {
-        var apiWord = '<span class="apiWord">';
+        let apiWord = '<span class="apiWord">';
         apiWord += validWordstoAPI[j]['newWord'];
         apiWord += '</span>'
         userSummaryArray[i] = apiWord;
@@ -76,20 +75,20 @@ function wiklibIsBorn(summaryArray, validWordstoAPI) {
     }
   }
 
-  var userSummaryContent = userSummaryArray.join(' ');
-  var userSummaryDiv = '<div id="user-summary">'
+  const userSummaryContent = userSummaryArray.join(' ');
+  let userSummaryDiv = '<div id="user-summary">'
   userSummaryDiv += '<h4 id="results-header" class="wiki-header">Your beautiful Wiklib</h4>'
   userSummaryDiv += userSummaryContent + '</div>';
 
 
-  var origSummaryContent = summaryArray.join(' ');
-  var origSummaryDiv = '<div id="original-summary">'
+  const origSummaryContent = summaryArray.join(' ');
+  let origSummaryDiv = '<div id="original-summary">'
   origSummaryDiv += '<h4 id="results-header" class="wiki-header"> Original Wiki Summary </h4>'
   origSummaryDiv += origSummaryContent + '</div>';
 
-  var resetButton = '<button class="btn btn-warning btn-lg" id="reset-btn">Another?</button>'
+  const resetButton = '<button class="btn btn-warning btn-lg" id="reset-btn">Another?</button>'
 
-  var wiklibResults = '<div id="results">' + userSummaryDiv + "<br>" + origSummaryDiv + "<br>" + resetButton + '</div>';
+  const wiklibResults = '<div id="results">' + userSummaryDiv + "<br>" + origSummaryDiv + "<br>" + resetButton + '</div>';
 
   $("#jumbo-header, #start-btn").hide();
   $("#results-start").append(wiklibResults);
@@ -108,7 +107,6 @@ function resetWiklib (summaryArray, validWordstoAPI, wiklibResults) {
   $(".modal-loading").show();
   $("#results").hide();
   $("#jumbo-header").show();
-  summaryArray = [];
-  validWordstoAPI = [];
   $( "#start-btn" ).trigger( "click" );
+  returnedDefs = 0;
 }
