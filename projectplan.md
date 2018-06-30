@@ -14,7 +14,7 @@
 - wiki font stack #done
 - git hub link #done
 - is it responsive? #done
-- loading message
+- loading message #done
 
 
 Stuff to solve:

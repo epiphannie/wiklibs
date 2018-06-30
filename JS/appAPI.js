@@ -40,7 +40,7 @@ function onWikiSuccess(array) {
         array[i].startsWith("File:") ||
         array[i].startsWith("Talk:"))) {
           randTitlesFiltered.push(array[i]);
-        } //end if
+        } //end if, definitely could be freshened up!
   } //end for loop
   //if there are no viable titles returned, try try again
   if (randTitlesFiltered.length == 0) {
