@@ -4,27 +4,35 @@ const urlWikiSummaryStart = 'https://en.wikipedia.org/w/api.php?action=query&for
 const urlWikiSummaryEnd = '&exintro=1';
 const urlWikiRandom = 'https://en.wikipedia.org/w/api.php?action=query&format=json&list=random&rnlimit=10'
 const encryptedAPI = "{\"iv\":\"kPhtqlQ7eRmTmzyPl+qgZQ==\",\"v\":1,\"iter\":10000,\"ks\":128,\"ts\":64,\"mode\":\"ccm\",\"adata\":\"\",\"cipher\":\"aes\",\"salt\":\"8rFXo7+KDiI=\",\"ct\":\"klP/yzcsi+y6SoL76bBdnjXXZ1bi7IwHcwz7vDJ2uc+GnXSZCEGTHoPt8bJNtv7jMiDx9txsKCRi6A==\"}";
-var wordsAPIheader = '';
-var decrypted = false;
-var apiKey = '';
+var wordsAPIheader = {
+  "X-Mashape-Key": "", //put your WordsAPI key here
+  "X-Mashape-Host": "wordsapiv1.p.mashape.com"
+};
+var decrypted = false; //if inserting your own key, set this to true
 let returnedDefs = 0;
 
 ///----------------API functions------------///
 
 function decryptKey (encryptedAPI) {
-  try {
-    const passphrase = prompt("What is the passphrase?");
-    apiKey = sjcl.decrypt(passphrase, encryptedAPI);
-    wordsAPIheader = {
-      "X-Mashape-Key": apiKey,
-      "X-Mashape-Host": "wordsapiv1.p.mashape.com"
-    };
-    console.log(apiKey);
-    console.log(wordsAPIheader);
-    decrypted = true;
+  if (decrypted) {
+    return true;
+  } else {
+    try {
+      const passphrase = prompt("What is the passphrase?");
+      const apiKey = sjcl.decrypt(passphrase, encryptedAPI);
+      wordsAPIheader = {
+        "X-Mashape-Key": apiKey,
+        "X-Mashape-Host": "wordsapiv1.p.mashape.com"
+      };
+      console.log(apiKey);
+      console.log(wordsAPIheader);
+      decrypted = true;
+      return true;
+      }
+    catch (error) {
+      // alert('To get the passphrase, contact Ann through Github');
+      return false;
     }
-  catch (error) {
-    alert('To get the passphrase, contact Ann through Github');
   }
 };
 

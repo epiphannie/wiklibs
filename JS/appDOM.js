@@ -14,11 +14,15 @@ function getRandomNumber(max) {
 
 ///---------------On Click---------///
 document.getElementById("start-btn").onclick = function () {
-  if (decrypted == false) {
-    decryptKey(encryptedAPI)
+  if(decryptKey(encryptedAPI)){
+    $(".modal-denied").hide();
+    $(".modal-title").hide();
+    getWikiRandom()
+  } else {
+    $(".modal-title").hide();
+    $(".modal-loading").hide();
+    $(".modal-denied").show();
   }
-  $(".modal-title").hide();
-  getWikiRandom()
 };
 
 ///---------------Manipulate HTML-----------///
