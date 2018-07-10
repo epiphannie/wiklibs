@@ -1,4 +1,4 @@
-var exampleParts = {
+const exampleParts = {
   'singular noun': 'cat, timeliness, underwear',
   'plural noun': 'parrots, eons, platypi',
   'adjective': 'red, sixth, dazzling',
