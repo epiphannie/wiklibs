@@ -1,13 +1,35 @@
 const urlWordsStart = 'https://wordsapiv1.p.mashape.com/words/'
 const urlWordsEnd = '/definitions';
 const urlWikiSummaryStart = 'https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&titles='
-const urlWikiSummaryEnd = '&exintro=1'
+const urlWikiSummaryEnd = '&exintro=1';
 const urlWikiRandom = 'https://en.wikipedia.org/w/api.php?action=query&format=json&list=random&rnlimit=10'
-let returnedDefs = 0
+const encryptedAPI = "{\"iv\":\"kPhtqlQ7eRmTmzyPl+qgZQ==\",\"v\":1,\"iter\":10000,\"ks\":128,\"ts\":64,\"mode\":\"ccm\",\"adata\":\"\",\"cipher\":\"aes\",\"salt\":\"8rFXo7+KDiI=\",\"ct\":\"klP/yzcsi+y6SoL76bBdnjXXZ1bi7IwHcwz7vDJ2uc+GnXSZCEGTHoPt8bJNtv7jMiDx9txsKCRi6A==\"}";
+var wordsAPIheader = '';
+var decrypted = false;
+var apiKey = '';
+let returnedDefs = 0;
 
 ///----------------API functions------------///
 
+function decryptKey (encryptedAPI) {
+  try {
+    const passphrase = prompt("What is the passphrase?");
+    apiKey = sjcl.decrypt(passphrase, encryptedAPI);
+    wordsAPIheader = {
+      "X-Mashape-Key": apiKey,
+      "X-Mashape-Host": "wordsapiv1.p.mashape.com"
+    };
+    console.log(apiKey);
+    console.log(wordsAPIheader);
+    decrypted = true;
+    }
+  catch (error) {
+    alert('To get the passphrase, contact Ann through Github');
+  }
+};
+
 function getWikiRandom () {
+  console.log('wiki random');
   $.ajax({
     url: urlWikiRandom,
     dataType: 'JSONP',
@@ -25,6 +47,7 @@ function getWikiRandom () {
 } //end getWikiRandom, returns the name of five random wiki articles for filtering
 
 function onWikiSuccess(randomTitles) {
+  console.log('on Wiki success');
   // fed into getWikiRandom
   const randTitlesFiltered = [];
   for (let i = 0; i < randomTitles.length; i++) {
@@ -51,6 +74,7 @@ function onWikiSuccess(randomTitles) {
 
 
 function getWikiSummary (wikiTitle) {
+  console.log('get Wiki summary');
   const requestURL = urlWikiSummaryStart + encodeURI(wikiTitle) + urlWikiSummaryEnd;
   //replaces special characters with not special ones :(
   $.ajax({
@@ -66,6 +90,7 @@ function getWikiSummary (wikiTitle) {
 } //end getWikiSummary, returns the summary of the random wiki article
 
 function parseSummary(originalSummary) {
+  console.log('parse summary');
   const $noTagSummary = $(originalSummary).text();
   const summaryArray = $noTagSummary.split(" ");
   if (summaryArray.length < 20 || summaryArray.length > 150) {
@@ -77,6 +102,7 @@ function parseSummary(originalSummary) {
 } // end parseSummary, strips HTML from summary and moves the summary into an summaryArray
 
 function countWords(summaryArray) {
+  console.log('count words');
   const validWords = [];
   for (let i = 0; i <summaryArray.length; i ++) {
     if (summaryArray[i].length > 4  && allLCletters(summaryArray[i])) {
@@ -95,6 +121,7 @@ function countWords(summaryArray) {
 } //end countWords, creates array of words at least 5 letters in length with no special characters
 
 function chooseWords(summaryArray, validWords) {
+  console.log('choose word');
   const wordsToUse = Math.min(Math.round(summaryArray.length/10), validWords.length, 5)
   const validWordstoAPIObject = {};
 
@@ -115,6 +142,7 @@ function chooseWords(summaryArray, validWords) {
 }//end chooseWords, selects the words in the article to send to wordsAPI
 
 function appendPartOfSpeech(summaryArray, validWordstoAPI) {
+  console.log('append part of speech');
   for (let counter = 0 ; counter < validWordstoAPI.length ; counter++) {
     iterateGetWord(counter, validWordstoAPI, summaryArray)
   }
@@ -144,6 +172,7 @@ function enhancedPartOfSpeech (wikiWord, partOfSpeech) {
 }//end enhancedPartOfSpeech
 
 function getWordData (wikiWord, counter, summaryArray, validWordstoAPI) {
+  console.log('get word data')
    const requestURL = urlWordsStart + wikiWord + urlWordsEnd;
    $.ajax({
      url: requestURL,

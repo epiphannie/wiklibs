@@ -14,6 +14,9 @@ function getRandomNumber(max) {
 
 ///---------------On Click---------///
 document.getElementById("start-btn").onclick = function () {
+  if (decrypted == false) {
+    decryptKey(encryptedAPI)
+  }
   $(".modal-title").hide();
   getWikiRandom()
 };
