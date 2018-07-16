@@ -35,16 +35,16 @@ function buildForm(summaryArray, validWordstoAPI, exampleParts) {
     const currID = 'word' + i;
     const currExamples = exampleParts[currPartOfSpeech.toLowerCase()];
 
-    formHTML += `
-      <div class="form-group">
-      <label for="${currID}">${currPartOfSpeech}</label>
-      <input
-        type="text"
-        class="form-control"
-        id="${currID}"
-        placeholder="${currExamples}">
-      </div>
-    `
+    formHTML += '<div class="form-group"> <label for="';
+    formHTML += currID;
+    formHTML += '">';
+    formHTML += currPartOfSpeech;
+    formHTML += '</label>';
+    formHTML += '<input type="text" class="form-control" id="'
+    formHTML += currID
+    formHTML += '" placeholder="'
+    formHTML += currExamples;
+    formHTML += '"></div>';
   }
 
   formHTML += '</form>';
