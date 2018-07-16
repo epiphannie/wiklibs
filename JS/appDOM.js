@@ -12,6 +12,13 @@ function getRandomNumber(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
 
+if (!String.prototype.startsWith) {
+  String.prototype.startsWith = function(searchString, position) {
+    position = position || 0;
+    return this.indexOf(searchString, position) === position;
+  };
+}//polyfill to allow startsWith in IE11
+
 ///---------------On Click---------///
 document.getElementById("start-btn").onclick = function () {
   if(decryptKey(encryptedAPI)){
