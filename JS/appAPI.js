@@ -137,7 +137,9 @@ function chooseWords(summaryArray, validWords) {
       }
     }
   }//end while loop, converts to a object to prevent duplicates
-  let validWordstoAPI = Object.values(validWordstoAPIObject); //converts back to array
+  let validWordstoAPI = Object.keys(validWordstoAPIObject).map(function(e) {
+  return validWordstoAPIObject[e]
+}); //converts back to array, updated since IE does not support Object.values
   appendPartOfSpeech(summaryArray,validWordstoAPI);
 }//end chooseWords, selects the words in the article to send to wordsAPI
 
