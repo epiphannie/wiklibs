@@ -115,7 +115,7 @@ function wiklibIsBorn(summaryArray, validWordstoAPI) {
 
 function resetWiklib (summaryArray, validWordstoAPI, wiklibResults) {
   if (document.getElementById('form-contents')) {
-      document.getElementById('form-contents').remove();
+      $('#form-contents').remove();
   } //remove form if present
 
   $(".modal-loading").show();
