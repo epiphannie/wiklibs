@@ -18,7 +18,7 @@ function decryptKey (encryptedAPI) {
     return true;
   } else {
     try {
-      const passphrase = prompt("What is the passphrase?");
+      const passphrase = prompt("What is the passphrase?", '');
       const apiKey = sjcl.decrypt(passphrase, encryptedAPI);
       wordsAPIheader = {
         "X-Mashape-Key": apiKey,
