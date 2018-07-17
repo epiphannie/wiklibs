@@ -77,7 +77,7 @@ function wiklibIsBorn(summaryArray, validWordstoAPI) {
   if (document.getElementById('results')) {
     document.getElementById('results').remove();
   }
-  const userSummaryArray = Array.from(summaryArray);
+  const userSummaryArray = summaryArray.slice(); //makes copy of array so I can manipulate one without affecting the other
   for (let i = 0; i < userSummaryArray.length; i++) {
     for (let j = 0; j < validWordstoAPI.length; j++) {
       if (i === validWordstoAPI[j]['origLoc']) {
